@@ -1,0 +1,513 @@
+@font-face {
+  font-family: 'PixelBody';
+  src: url('/Body - Font - Pixelated.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'PixelTitle';
+  src: url('/Title - Font - Thick  Smooth Pixel.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'PixelBlurb';
+  src: url('/Blurb - Font - In Italics.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'CatPaw';
+  src: url('/CatPaw-zr0OG[1].otf') format('opentype');
+}
+
+body {
+  font-family: 'PixelBody', sans-serif;
+  background: 
+      linear-gradient(45deg, #111 25%, transparent 25%) -10px 0,
+      linear-gradient(-45deg, #111 25%, transparent 25%) -10px 0,
+      linear-gradient(45deg, transparent 75%, #111 75%) -10px 0,
+      linear-gradient(-45deg, transparent 75%, #111 75%) -10px 0;
+  background-color: #1a1a1a;
+  background-size: 20px 20px;
+  color: #e0e0e0;
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  font-family: 'PixelTitle', sans-serif;
+  color: #ff3333;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  font-size: 1.5em;
+  margin-top: 0;
+  text-align: center;
+}
+
+.library-section {
+  width: 300px;
+  padding: 20px;
+  background: #1a1a1a;
+  border-right: 2px solid #ff3333;
+  overflow-y: auto;
+  height: calc(100vh - 40px);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.main-section {
+  flex: 1;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 60px;
+}
+
+.input-section {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 15px;
+  align-items: start;
+  background: #222;
+  padding: 30px;  
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border: 1px solid #333;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-family: 'PixelBody';
+  background: #2a2a2a;
+  border: 2px solid #ff3333;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #ff5555;
+  box-shadow: 0 0 5px rgba(255,51,51,0.5);
+}
+
+select {
+  font-family: 'PixelBody';
+  background: #2a2a2a;
+  border: 2px solid #ff3333;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: #ff5555;
+  box-shadow: 0 0 5px rgba(255,51,51,0.5);
+}
+
+button {
+  font-family: 'PixelBody';
+  background: #ff3333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: #ff4444;
+  box-shadow: 0 2px 8px rgba(255,51,51,0.4);
+}
+
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #992222;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.delete-btn:hover {
+  background: #cc2222;
+}
+
+.delete-all-btn {
+  display: none;
+}
+
+.weapon-list-item {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.weapon-list-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.weapon-card {
+  padding: 30px;  
+  margin-bottom: 20px; 
+  padding-bottom: 50px; 
+  min-height: 300px; 
+  position: relative;
+  background: #1a1a1a;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.weapon-card .number {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.weapon-card h3 { 
+  color: white !important;
+}
+
+.weapon-card .flavor-blurb {
+  font-family: 'PixelBlurb', sans-serif;
+  font-style: italic;
+  margin: 5px 0 15px 0;
+  font-size: 1.3em;
+  line-height: 1.4;
+  opacity: 1;
+  color: white;
+}
+
+.weapon-card .flavor-blurb::before,
+.weapon-card .flavor-blurb::after {
+  font-size: 1.95em;
+  line-height: 0;
+  vertical-align: -0.1em;
+}
+
+.weapon-card .flavor-blurb::before {
+  content: """; 
+}
+
+.weapon-card .flavor-blurb::after { 
+  content: """;
+}
+
+.weapon-card.rarity-Common {
+  background: linear-gradient(45deg, #404040, #606060);
+  border: 2px solid #a0a0a0;
+}
+
+.weapon-card.rarity-Uncommon {
+  background: linear-gradient(45deg, #1a4a1c, #2a6e2c);
+  border: 2px solid #4CAF50;
+}
+
+.weapon-card.rarity-Rare {
+  background: linear-gradient(45deg, #0d47a1, #1565c0);
+  border: 2px solid #2196F3;
+}
+
+.weapon-card.rarity-Epic {
+  background: linear-gradient(45deg, #4a148c, #6a1b9a);
+  border: 2px solid #9C27B0;
+}
+
+.weapon-card.rarity-Super-Epic {
+  background: linear-gradient(45deg, #ff00ff, #ffd700);
+  border: 2px solid #ff69b4;
+  animation: borderShimmer 2s linear infinite;
+}
+
+.weapon-card.rarity-Legendary {
+  background: linear-gradient(45deg, #FFD700, #FFDF00);
+  border: 2px solid #FFD700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.weapon-card.rarity-Mythical {
+  background: linear-gradient(45deg, #8B0000, #FF0000);
+  border: 2px solid #FF0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+}
+
+.weapon-card.rarity-Transcendent,
+.weapon-list-item.rarity-Transcendent {
+  --transcendent-gradient: linear-gradient(45deg, #ffffff, #eeeeee);
+  --transcendent-color: #ffffff;
+  --transcendent-glow: rgba(255,255,255,0.4);
+}
+
+.weapon-card.rarity-Transcendent {
+  background: var(--transcendent-gradient);
+  border: 2px solid var(--transcendent-color);
+  box-shadow: 0 0 30px var(--transcendent-glow);
+  animation: borderGlow 2s infinite;
+}
+
+.weapon-list-item.rarity-Transcendent { 
+  background: var(--transcendent-gradient);
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 0 20px var(--transcendent-glow);
+  animation: transcendentGlow 2s infinite;
+}
+
+/* Element styles */
+.element-None { color: #ffffff; }
+.element-Fire { color: #ff4444; }
+.element-Ice { color: #00ffff; }
+.element-Water { color: #4444ff; }
+.element-Plant { color: #44ff44; }
+.element-Electric { color: #ffff44; }
+.element-Darkness { color: #4b0082; }
+.element-Light { color: #ffff80; }
+.element-Earth { color: #8b4513; }
+.element-Wind { color: #008080; }
+.element-Poison { color: #800080; }
+.element-Cute { color: #FFB6C1; }
+.element-Noble { color: #9370DB; }
+.element-Undead { color: #808000; }
+.element-Arcane { color: #8B008B; }
+.element-Transformation { color: #B8860B; }
+.element-Reality { color: #FF1493; }
+.element-Spirit { color: #98FB98; }
+.element-Inanimate { color: #00008B; }
+.element-Metal { color: #4A4A4A; }
+.element-Animal { color: #654321; }
+
+/* Theme styles */
+body.theme-cat {
+  background: url('/pink-background.gif') !important;
+  font-family: 'CatPaw', sans-serif;
+}
+
+body.theme-cat .input-section,
+body.theme-cat .weapon-card,
+body.theme-cat .chat-container,
+body.theme-cat .suggestions-box,
+body.theme-cat .battle-logs-box,
+body.theme-cat .admin-box,
+body.theme-cat .codes-box,
+body.theme-cat .rules-box {
+  background: rgba(255,182,193,0.3);
+}
+
+body.theme-cat h1 {
+  font-family: 'CatPaw', sans-serif;
+  color: #FFB6C1;
+}
+
+body.theme-cat .input-label {
+  color: #FFB6C1;
+}
+
+body.theme-cat button {
+  font-family: 'CatPaw', sans-serif;
+  background: #FFB6C1;
+}
+
+body.theme-cat button:hover {
+  background: #FFC0CB;
+}
+
+body.theme-cat input[type="text"],
+body.theme-cat select,
+body.theme-cat textarea {
+  font-family: 'CatPaw', sans-serif;
+  border-color: #FFB6C1;
+}
+
+body.theme-cat .chat-container {
+  border-color: #FFB6C1;
+}
+
+body.theme-cat .chat-message .username {
+  color: #FFB6C1;
+}
+
+/* Add color overrides for rarity styles */
+body.theme-cat .rarity-Common { 
+  background: #FFE4E1;
+  color: #FFB6C1;
+}
+
+body.theme-cat .rarity-Uncommon { 
+  background: #FFC0CB;
+  color: #fff;
+}
+
+body.theme-cat .rarity-Rare { 
+  background: #FFB6C1;
+  color: #fff;
+}
+
+body.theme-cat .rarity-Epic { 
+  background: #FF69B4;
+  color: #fff;
+}
+
+body.theme-cat .rarity-Super-Epic { 
+  background: linear-gradient(45deg, #FFC0CB, #FFB6C1);
+  color: #fff;
+}
+
+body.theme-cat .rarity-Legendary { 
+  background: linear-gradient(45deg, #FFB6C1, #FFC0CB);
+  color: #fff;
+}
+
+body.theme-cat .rarity-Mythical { 
+  background: linear-gradient(45deg, #FF69B4, #FFB6C1);
+  color: #fff;
+}
+
+/* Add color overrides for element styles */
+body.theme-cat .element-None { color: #FFE4E1; }
+body.theme-cat .element-Fire { color: #FFB6C1; }
+body.theme-cat .element-Ice { color: #E0FFFF; }
+body.theme-cat .element-Water { color: #F0F8FF; }
+body.theme-cat .element-Plant { color: #FFE4E1; }
+body.theme-cat .element-Electric { color: #FFF0F5; }
+body.theme-cat .element-Darkness { color: #FF69B4; }
+body.theme-cat .element-Light { color: #FFF0F5; }
+body.theme-cat .element-Earth { color: #FFE4E1; }
+body.theme-cat .element-Wind { color: #FFF0F5; }
+body.theme-cat .element-Poison { color: #FFC0CB; }
+body.theme-cat .element-Cute { color: #FFB6C1; }
+body.theme-cat .element-Noble { color: #FFC0CB; }
+body.theme-cat .element-Undead { color: #FFE4E1; }
+body.theme-cat .element-Arcane { color: #FF69B4; }
+body.theme-cat .element-Transformation { color: #FFB6C1; }
+body.theme-cat .element-Reality { color: #FFC0CB; }
+body.theme-cat .element-Spirit { color: #FFE4E1; }
+body.theme-cat .element-Inanimate { color: #FFF0F5; }
+body.theme-cat .element-Metal { color: #FFE4E1; }
+body.theme-cat .element-Animal { color: #FFB6C1; }
+
+/* Theme styles for emo mode */
+body.theme-emo {
+  filter: grayscale(100%);
+  font-family: "Viafont", monospace;
+}
+
+body.theme-emo h1,
+body.theme-emo button,
+body.theme-emo input[type="text"],
+body.theme-emo select,
+body.theme-emo textarea,
+body.theme-emo .input-label {
+  font-family: "Viafont", monospace;
+}
+
+/* Deer theme (Shikanoko) */
+body.theme-deer {
+  background: #2c1810 !important;
+  color: #d4af37;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5C35 15 40 20 50 20C40 20 35 25 35 35C35 25 30 20 20 20C30 20 35 15 30 5Z' fill='%23d4af37' fill-opacity='0.1'/%3E%3C/svg%3E") !important;
+}
+
+body.theme-deer .input-section,
+body.theme-deer .weapon-card,
+body.theme-deer .chat-container,
+body.theme-deer .suggestions-box,
+body.theme-deer .battle-logs-box,
+body.theme-deer .admin-box,
+body.theme-deer .codes-box,
+body.theme-deer .rules-box {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: #d4af37;
+}
+
+body.theme-deer h1 {
+  color: #d4af37;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+body.theme-deer button {
+  background: #3c2415;
+  color: #d4af37;
+  border: 1px solid #d4af37;
+}
+
+body.theme-deer button:hover {
+  background: #4d2d1a;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+body.theme-deer input[type="text"],
+body.theme-deer select,
+body.theme-deer textarea {
+  background: #3c2415;
+  border-color: #d4af37;
+  color: #d4af37;
+}
+
+/* Nuclear theme */
+body.theme-nuclear {
+  background: #000 !important;
+  color: #00ff00;
+}
+
+body.theme-nuclear .input-section,
+body.theme-nuclear .weapon-card,
+body.theme-nuclear .chat-container,
+body.theme-nuclear .suggestions-box,
+body.theme-nuclear .battle-logs-box,
+body.theme-nuclear .admin-box,
+body.theme-nuclear .codes-box,
+body.theme-nuclear .rules-box {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: #00ff00;
+}
+
+body.theme-nuclear h1 {
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+body.theme-nuclear button {
+  background: #003300;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+body.theme-nuclear button:hover {
+  background: #004400;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+/* Blue theme */
+body.theme-blue {
+  background: #1e3a8a !important;
+  color: #93c5fd;
+}
+
+body.theme-blue .input-section,
+body.theme-blue .weapon-card,
+body.theme-blue .chat-container,
+body.theme-blue .suggestions-box,
+body.theme-blue .battle-logs-box,
+body.theme-blue .admin-box,
+body.theme-blue .codes-box,
+body.theme-blue .rules-box {
+  background: rgba(147, 197, 253, 0

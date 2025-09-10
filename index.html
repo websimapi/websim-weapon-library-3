@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Viafont&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/confetti-js"></script>
+</head>
+<body>
+  <div class="library-section">
+    <h1>Weapon Library</h1>
+    <div class="library-controls">
+      <input type="text" id="weaponSearch" placeholder="Search weapons by name, description, abilities..." class="weapon-search">
+      <div class="sort-controls">
+        <select id="sortBy">
+          <option value="rarity-desc">Rarity (High to Low)</option>
+          <option value="rarity-asc">Rarity (Low to High)</option>
+          <option value="name">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="damage-desc">Damage (High to Low)</option>
+          <option value="damage-asc">Damage (Low to High)</option>
+        </select>
+      </div>
+    </div>
+    <div id="weaponLibrary"></div>
+  </div>
+  
+  <div class="main-section">
+    <div class="upload-container" style="display: flex; align-items: center; margin-bottom: 10px;">
+      <input type="file" id="weaponFileUpload" style="display: none" accept=".txt" onchange="uploadWeapon(event)">
+      <button class="upload-btn" onclick="document.getElementById('weaponFileUpload').click()">Upload Weapon</button>
+      <label class="privacy-toggle" style="margin-left: 10px;">
+        <input type="checkbox" id="uploadPrivacy">
+        <span class="privacy-label">Make uploaded weapon private</span>
+      </label>
+    </div>
+    
+    <div class="mode-buttons">
+      <button class="forge-mode-btn" onclick="switchMode('forge')">Forge Mode</button>
+      <button class="arena-mode-btn" onclick="switchMode('arena')">Arena Mode</button>
+      <button class="suggestions-mode-btn" onclick="switchMode('suggestions')">Suggestions</button>
+      <button class="admin-mode-btn" onclick="switchMode('admin')">Admin Mode</button>
+      <button class="rules-mode-btn" onclick="switchMode('rules')">Rules</button>
+      <div class="admin-dropdown">
+        <button class="admin-toggle" onclick="toggleAdminDropdown()">More Options &#x25bc;</button>
+        <div class="admin-dropdown-content">
+          <button class="battle-logs-mode-btn" onclick="switchMode('battle-logs')">Battle Logs</button>
+          <button class="codes-mode-btn" onclick="switchMode('codes')">Codes</button>
+          <button class="merge-mode-btn" onclick="switchMode('merge')">Merge Mode</button>
+          <button class="rpg-mode-btn" onclick="switchMode('rpg')">RPG Mode</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-section">
+      <span class="input-label">Context:</span>
+      <div class="input-group">
+        <textarea id="weaponContext" class="context-input" placeholder="Add some context about your weapon (optional)..." rows="2"></textarea>
+      </div>
+      <span class="input-label">Name:</span>
+      <div class="input-group">
+        <input type="text" id="weaponName" placeholder="Enter weapon name...">
+      </div>
+      <span class="input-label">Description:</span>
+      <div class="input-group">
+        <textarea id="weaponDescription" placeholder="Describe your weapon's abilities and characteristics..." rows="3"></textarea>
+      </div>
+      <span class="input-label">Function:</span>
+      <div class="function-selector">
+        <select id="weaponType" class="main-selector">
+          <option value="Generic">Generic</option>
+          <option value="Melee">Melee</option>
+          <option value="Ranged">Ranged</option>
+          <option value="Defense">Defense</option>
+          <option value="Throwable">Throwable</option>
+          <option value="Area of Effect">Area of Effect</option>
+          <option value="Damage over Time">Damage over Time</option>
+          <option value="Magic">Magic</option>
+          <option value="Summon Ally">Summon Ally</option>
+          <option value="Healing">Healing</option>
+          <option value="Support">Support</option>
+          <option value="Debuff">Debuff</option>
+          <option value="Siege">Siege</option>
+          <option value="Single Use">Single Use</option>
+          <option value="Ambush">Ambush</option>
+          <option value="Backfire">Backfire</option>
+          <option value="Charisma">Charisma</option>
+          <option value="Peaceful">Peaceful</option>
+          <option value="Transformation">Transformation</option>
+          <option value="Mind Control">Mind Control</option>
+          <option value="Time Manipulation">Time Manipulation</option>
+        </select>
+        <select id="optionalWeaponType1" class="optional-selector">
+          <option value>Optional Function 1</option>
+        </select>
+        <select id="optionalWeaponType2" class="optional-selector">
+          <option value>Optional Function 2</option>
+        </select>
+      </div>
+      <span class="input-label"></span>
+      <div class="input-group">
+        <button onclick="generateWeapon()">Generate Weapon</button>
+      </div>
+    </div>
+
+    <div class="battle-section" style="display: none;">
+      <div class="team-toggle">
+        <button class="battle-mode-btn active" onclick="toggleBattleMode('duel')">Duel Mode</button>
+        <button class="battle-mode-btn" onclick="toggleBattleMode('team')">Team Mode</button>
+      </div>
+      <div id="duelMode">
+        <h2>Choose Your Weapons</h2>
+        <label class="battle-label">Gore Intensity:</label>
+        <select id="goreIntensity" class="gore-select">
+          <option value="Tame">Tame</option>
+          <option value="Violent">Violent</option> 
+          <option value="Bloodbath">Bloodbath</option>
+        </select>
+        <label class="battle-label">Location:</label>
+        <input type="text" id="battleLocation" placeholder="Arena" class="battle-input">
+        <label class="battle-label">Weapon 1:</label>
+        <select id="weapon1" onchange="validateWeaponSelection()">
+          <option value>Select First Weapon</option>
+        </select>
+        <label class="battle-label">Weapon 2:</label>  
+        <select id="weapon2" onchange="validateWeaponSelection()">
+          <option value>Select Second Weapon</option>
+        </select>
+        <button onclick="startBattle()">Begin Battle</button>
+        <div id="battleDescription" class="battle-description"></div>
+        <div id="winnerAnnouncement" class="winner-announcement"></div>
+      </div>
+      <div id="teamMode" class="team-mode-container">
+        <div class="team-controls">
+          <button onclick="addTeam()">Add Team</button>
+        </div>
+        <div id="teamsContainer" class="teams-container">
+          <!-- Teams will be added here dynamically -->
+        </div>
+        <label class="battle-label">Location:</label>
+        <input type="text" id="teamBattleLocation" placeholder="Arena" class="battle-input">
+        <button onclick="startTeamBattle()">Begin Team Battle</button>
+        <div id="teamBattleDescription" class="battle-description"></div>
+      </div>
+    </div>
+
+    <div class="merge-section">
+      <h2>Merge Weapons</h2>
+      <label class="battle-label">First Weapon:</label>
+      <select id="mergeWeapon1" onchange="validateMergeSelection()">
+        <option value>Select First Weapon</option>
+      </select>
+      <label class="battle-label">Second Weapon:</label>
+      <select id="mergeWeapon2" onchange="validateMergeSelection()">
+        <option value>Select Second Weapon</option>  
+      </select>
+      <button onclick="mergeWeapons()">Merge Weapons</button>
+      <div id="mergeResult" class="merge-result"></div>
+    </div>
+
+    <div id="selectedWeapon"></div>
+    
+    <div class="chat-toggle" onclick="toggleChat()">&#x1f4ac;</div>
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-container">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <div class="suggestions-box">
+      <h2 style="color: #4CAF50; margin-top: 0;">Suggestions Box</h2>
+      <div class="suggestions-list" id="suggestionsList"></div>
+      <textarea class="suggestions-input" id="suggestionInput" placeholder="Share your ideas for improving the weapon forge..."></textarea>
+      <button class="submit-suggestion" onclick="submitSuggestion()">Submit Suggestion</button>  
+    </div>
+
+    <div class="battle-logs-box">
+      <h2 style="color: #2196F3; margin-top: 0;">Battle Logs</h2>
+      <div class="battle-logs-list" id="battleLogsList"></div>
+    </div>
+
+    <div class="admin-box">
+      <h2 style="color: #9C27B0; margin-top: 0;">Admin Controls</h2>
+      <div class="admin-section">
+        <h3>Add New Element</h3>
+        <input type="text" id="newElementName" placeholder="Element name...">
+        <input type="text" id="newElementColor" placeholder="Color (hex or name)...">
+        <input type="text" id="newElementEmoji" placeholder="Element emoji...">
+        <button onclick="addNewElement()">Add Element</button>
+      </div>
+      <div class="admin-section">
+        <h3>Add New Function</h3>
+        <input type="text" id="newFunctionName" placeholder="Function name...">
+        <button onclick="addNewFunction()">Add Function</button>
+      </div>
+      <div class="admin-section">
+        <h3>Remove Element</h3>
+        <select id="elementToRemove">
+          <option value>Select Element to Remove</option>
+        </select>
+        <button onclick="removeElement()">Remove Element</button>
+      </div>
+      <div class="admin-section">
+        <h3>Remove Function</h3>
+        <select id="functionToRemove">
+          <option value>Select Function to Remove</option>
+        </select>
+        <button onclick="removeFunction()">Remove Function</button>
+      </div>
+      <div class="admin-section">
+        <h3>Update Publisher</h3>
+        <p>This will redirect all users to the latest version</p>
+        <button onclick="publishUpdate()">Publish Update</button>
+      </div>
+    </div>
+
+    <div class="codes-box">
+      <h2 style="color: #9C27B0; margin-top: 0;">Secret Codes</h2>
+      <input type="text" id="codeInput" placeholder="Enter code...">
+      <button onclick="submitCode()">Submit Code</button>
+    </div>
+
+    <div class="rpg-box">
+      <h2 style="color: #8e44ad; margin-top: 0;">Text RPG Adventure</h2>
+      <div class="starting-weapon">
+        <label>Starting Weapon:</label>
+        <select id="startingWeaponChoice">
+          <option value="random">Random Weapon</option>
+          <option value="choose">Choose Weapon</option>
+        </select>
+        <select id="specificWeapon" style="display: none;">
+          <option value>Select a Weapon</option>
+        </select>
+        <input type="text" id="adventureLocation" placeholder="Enter starting location..." class="adventure-location">
+      </div>
+      <button onclick="startNewAdventure()">Start New Adventure</button>
+      <div id="adventureText" class="adventure-text"></div>
+      <div id="choiceButtons" class="choice-buttons"></div>
+      <div class="action-input">
+        <input type="text" id="customAction" placeholder="Type your action..." disabled>
+        <button onclick="submitCustomAction()" id="submitActionBtn" disabled>Submit Action</button>
+        <div id="actionProcessing" style="display: none;">Processing action...</div>
+      </div>
+      <div id="inventory" class="inventory">
+        <h3>Inventory</h3>
+        <div id="inventoryList" class="inventory-list"></div>
+        <div id="selectedWeaponStats" class="weapon-stats"></div>
+      </div>
+    </div>
+
+    <div class="rules-box">
+      <h2>Community Rules</h2>
+      <ol>
+        <li>Don't create nsfw material, implied nsfw, fetish material, or anything close without using private mode.</li>
+        <li>No hate, this is a safe space. Nazis and neo-nazis, homophobes, transphobes, racists, sexists, whatever, it's not allowed.</li>
+        <li>Have fun!</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    Forging your weapon... 
+  </div>
+  <div class="battle-loading" id="battleLoading">
+    Duel in progress...
+  </div>
+
+  <script src="script.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
